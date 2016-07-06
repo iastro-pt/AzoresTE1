@@ -1,0 +1,14 @@
+# Parameter Name    Prior Type    Parameters    Initial guess 
+P                   Uniform       3.2,3.3
+t0                  Uniform       3200,3250
+a                   Uniform       1,10
+p                   Uniform       0.0,0.5
+inc                 Uniform       70,90         87.0
+sigma_w             Jeffreys      0.1,1000.0
+q1                  Uniform       0,1
+q2                  Uniform       0,1
+ecc                 FIXED         0.0
+omega               FIXED         90.0
+mu                  Uniform       31,33
+K                   Jeffreys      0.0001,1
+sigma_w_rv          Jeffreys      0.0001,1
