@@ -1,0 +1,155 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,natbib}
+\usepackage{float,graphicx}
+
+%\usepackage{mparhack}
+%\usepackage{numberparagraphs}
+% \newcommand{\numberparagraphs}{}
+%\newcommand{\nonumberparagraphs}{}
+
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\newcommand{\exampleplot}[1]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\end{center}%
+}
+\newcommand{\exampleplottwo}[2]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\includegraphics[width=0.5\textwidth]{#2}%
+\end{center}%
+}
+
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\figurenames}{\figurename s}
+\newcommand{\problemname}{Exercise}
+\newcommand{\problemnames}{\problemname s}
+\newcommand{\solutionname}{Solution}
+\newcommand{\notename}{note}
+
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{#1}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allS}{\setofall{\mS_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
+\newcommand{\pfg}{p_{\mathrm{fg}}}
+\newcommand{\pbg}{p_{\mathrm{bg}}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
+\newcommand{\bperp}{b_{\perp}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\meanZ}{\mean{\mZ}}
+
+% header stuff
+\usepackage{fancyhdr}
+\usepackage{lipsum} % only for showing some sample text
+\fancyhf{} % clear all header and footers
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\rfoot{\thepage}
+%
+%lfoot{\thepage} % puts it on the left side instead
+%
+% or if your document is 2 sided, and you want even and odd placement of the number
+%\fancyfoot[LE,RO]{\thepage} % Left side on Even pages; Right side on Odd pages
+%
+\pagestyle{fancy}
+\renewcommand{\MakeUppercase}[1]{#1}
+% \pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{}{}
+
+\begin{document}
+
+
+\section*{Transit search}
+
+\begin{quote}
+    For the transit search we will use the most common method called the Box-fitting Least Squares algorithm (Kovacs et al. 2002).
+\end{quote}
+
+
+To study the periodicities of a data set there are several timing analysis methods that can be used. These can be divided in two basic types: Fourier analysis (Deeming 1975; Lomb 1976; Scargle 1982; van der Klis 1988; Press \& Rybicki 1989; Press et al. 1992; Gray 1992; Bracewell 1986) and folding techniques (Stellingwerf 1978; Leahy et al. 1983; Davies 1990, 1991). Fourier analysis methods are based in the decomposition of the signal into sinusoidal functions of a given frequency, which are Fourier transforms (FT). They are useful when we want to detect a sinusoidal signal even in low signal to noise data. Folding techniques consist of folding the data over trial periods and then analysing the scatter of the resulting profile with an appropriate statistic. Using, for example, the epoch-folding statistic we can obtain the probability of the existence of a periodicity as a function of the trial period. Folding techniques are better than FTs to study non-sinusoidal periodic signals but can fail in the presence of multiple periods.
+
+When searching for periodic signals in light curves it is common to use the Discrete Fourier Transform or for the more general case of  not evenly sampled data the lomb scargle periodogram.
+For the case of transits the signal is non sinusoidal and localised in time therefore a large number of harmonics is needed to describe the function leading to leakage of the power to higher harmonics.  To avoid this problem Kovacs et al. (2002) proposed the  Box-fitting Least Squares algorithm that uses box-shaped functions to fit the signal instead of sinusoids. The box shape is 
+the superposition of two step functions with opposite signs representing a low and a high state with the low state lasting much less time.
+ 
+The algorithm works as folding technique calculating the power for a defined set of frequencies with frequency separation \textbf{df}, a minimum frequency \textbf{fmin} and the number of frequency bins to test \textbf{nf}. Each light curve is folded at the trial frequency and binned in phase into \textbf{nb} data bins. Then the algorithm searches for the low state based within a fractional duration range ( \textbf{qmi-qma}) and then fits the  \textbf{depth},  \textbf{duration} and the start \textbf{in1} and end \textbf{in2} of the transit, with the power corresponding to the goodness of fit. The result is a periodogram ( power as a function of each trial frequency),  and estimation of the fitted parameters for the best period (frequency).
+ 
+
+
+
+\vfill
+\begin{problem}\label{prob:first}
+
+Search for transits in a K2 C4 light curve of EPIC 211089792 using a Box-fitting Least Squares algorithm implementation in python called Python BLS code.\\
+Search for periods from 0.5 days to about 70\% of the full duration of the observation with a frequency resolution of 0.001 and choose the remaining  parameters nb, qmi, qma. \\
+Calculate the BLS periodogram for these frequencies and plot it. \\
+Identify the frequency of highest peak its corresponding parameters: power, depth, duration, epoch. \\
+Phase fold the light curve using the period found. How does it look? \\
+Try out different input parameters and discuss the best result. \\
+Take note of the derived parameters. \\
+\end{problem}
+
+
+% \nocite{Hogg2010a}
+% \renewcommand{\refname}{\normalfont\selectfont\normalsize \textbf{Based on}}
+\bibliographystyle{plain}
+\bibliography{/home/joao/phd/bib/zotero_library}
+
+\end{document}
