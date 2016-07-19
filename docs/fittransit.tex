@@ -1,0 +1,170 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,natbib}
+\usepackage{float,graphicx}
+
+%\usepackage{mparhack}
+%\usepackage{numberparagraphs}
+% \newcommand{\numberparagraphs}{}
+%\newcommand{\nonumberparagraphs}{}
+
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\newcommand{\exampleplot}[1]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\end{center}%
+}
+\newcommand{\exampleplottwo}[2]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\includegraphics[width=0.5\textwidth]{#2}%
+\end{center}%
+}
+
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\figurenames}{\figurename s}
+\newcommand{\problemname}{Exercise}
+\newcommand{\problemnames}{\problemname s}
+\newcommand{\solutionname}{Solution}
+\newcommand{\notename}{note}
+
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{#1}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allS}{\setofall{\mS_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
+\newcommand{\pfg}{p_{\mathrm{fg}}}
+\newcommand{\pbg}{p_{\mathrm{bg}}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
+\newcommand{\bperp}{b_{\perp}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\meanZ}{\mean{\mZ}}
+
+% header stuff
+\usepackage{fancyhdr}
+\usepackage{lipsum} % only for showing some sample text
+\fancyhf{} % clear all header and footers
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\rfoot{\thepage}
+%
+%lfoot{\thepage} % puts it on the left side instead
+%
+% or if your document is 2 sided, and you want even and odd placement of the number
+%\fancyfoot[LE,RO]{\thepage} % Left side on Even pages; Right side on Odd pages
+%
+\pagestyle{fancy}
+\renewcommand{\MakeUppercase}[1]{#1}
+% \pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{}{}
+
+
+\def\degr{\hbox{$^\circ$}}
+
+\begin{document}
+
+
+\section*{Transit fitting}
+
+\begin{quote}
+    For the transit fitting we will use the BATMAN code, a python implementation of the transit model and lmfit, a python implementation of the Levenberg-Marquardt method for least squares fitting.
+\end{quote}
+
+
+A transit event occurs when a planet passes in from of its parent star. In its simplest form a transit is a geometrical effect and has 5 observables: period \textbf{per}, mid-transit time \textbf{T0}, depth, total transit duration and duration of the total transit (flat part). For circular orbits it was shown that these observables lead to a unique solution (Seager et al. 2003) of the transit parameters: $\frac{r_p}{r_{*}}$, inclination, $\frac{a}{r_{*}}$, where  $r_p$ and $r_{*}$ are the radius of the planet and star respectively and $a$ is the semi-major axis of the orbit. In batman these are called \textbf{$r_p$, inc, a}. For eccentric orbits two more parameters affect the transit shape the eccentricity \textbf{ecc} and the longitude of periastron \textbf{$\omega$}. These affect both the velocity of the planet and  the distance between the star and planet at the time of transit. For this exercise we will assume circular orbits. In Batman this corresponds to $ecc = 0$ and $\omega = 90\degr$.  Real stars show limb darkening that also affects the transit shape. For this exercise we will use the quadratic limb darkening law and assume   $u_1= 0.4983$ and $u_2= 0.2042$ for this star at the Kepler bandpass. You will also need to use the following relations:
+\begin{equation}
+depth= \left( \frac{r_p}{r_{*}} \right)^2
+\end{equation}
+
+\begin{equation}
+\rho_*=  \frac{4 \pi^2}{G P^2}   \left( \frac{a}{r_{*}} \right)^3
+\end{equation}
+
+
+\vfill
+\begin{problem}\label{prob:easy}
+Plot the light curve of EPIC 211089792. For simplicity remove epoch from time.\\
+Make an initial guess of the transit parameters using the equations above and the parameters obtain with the BLS. You can also assume that the star has the density of the sun. \\
+Use the initial guess of the transit parameters to obtain a transit model with Batman.Overplot the model on the data.
+\end{problem}
+
+
+
+
+
+\begin{problem}\label{prob:standard}
+Fit the transits using the batman model and the lmfit assuming a circular orbit and the limb darkening parameters given above.\\
+Hint: start by creating a function that calls the transit model given the model parameters and returns the difference between the model and the datapoints. The parameters need to be defined according to the lmfit requirements. \\
+Call the function minimise from lmfit that will minimise the above function and estimate the transit parameters.\\
+Plot the phase folded the data using the new derived ephemeris and the fitted model.
+\end{problem}
+
+
+
+
+
+\begin{problem}\label{prob:quadratic}
+Cut the out-of-transit parts in order to have a total of 3 transit durations for each transit centred at the mid-transit time and write the results to a file.
+
+\end{problem}
+
+
+\bibliographystyle{plain}
+\bibliography{/home/joao/phd/bib/zotero_library}
+
+\end{document}
