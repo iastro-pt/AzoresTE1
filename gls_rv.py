@@ -32,4 +32,20 @@ plt.show()
 
 # determine the period of maximum power
 ind = power.argmax()
+best_period = (1/frequency)[ind]
 print 'period of maximum power:', (1/frequency)[ind], 'days'
+
+
+# use epoch0 from BLS
+T0 = 57064.424499156354
+# T0 = 53219.0095
+best_period = 3.2588321
+phase = ((time - T0) / best_period) % 1.
+# phase[np.where(phase>0.5)[0]]-=1
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.plot(phase, rv, '.')
+ax.set_xlim([0, 1])
+ax.set_xlabel('Orbital phase')
+plt.show()
